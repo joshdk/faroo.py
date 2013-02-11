@@ -10,6 +10,7 @@ Full FAROO API documentation can be found at http://www.faroo.com/hp/api/api.htm
 """
 
 import datetime
+import sys
 import urllib
 import json
 
@@ -142,14 +143,20 @@ def FarooPerformRequest(freq):
 
 	try:
 		# Attempt to urlencode parameters
-		parameters = urllib.parse.urlencode(parameters)
+		if sys.version_info < (3, 0):
+			parameters = urllib.urlencode(parameters)
+		else:
+			parameters = urllib.parse.urlencode(parameters)
 		url        = '?'.join([base, parameters])
 	except:
 		return None
 
 	try:
 		# Attempt to perform web request
-		response   = urllib.request.urlopen(url)
+		if sys.version_info < (3, 0):
+			response   = urllib.urlopen(url)
+		else:
+			response   = urllib.request.urlopen(url)
 		data       = response.read().decode('utf-8')
 	except:
 		return None
