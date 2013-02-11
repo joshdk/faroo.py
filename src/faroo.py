@@ -1,14 +1,32 @@
 #!/usr/bin/env python
 # faroo.py
+
+"""
+Python dindings to the FAROO web search API.
+
+This module aims to provide Python bindings to the FAROO web search API.
+
+Full FAROO API documentation can be found at http://www.faroo.com/hp/api/api.html
+"""
+
 import datetime
 import urllib
 import json
+
+__author__ = 'Josh Komoroske'
 
 
 
 
 #{{{ Faroo request class
 class FarooRequest:
+	"""
+	Encapsulates an individual request to the FAROO API.
+
+	>>> FarooRequest()
+	>>> FarooRequest({'q': 'lolcats'})
+	>>> FarooRequest({'q': 'lolcats', 'length': 8})
+	"""
 
 #{{{ Constructor
 	def __init__(self, template={}):
@@ -28,6 +46,11 @@ class FarooRequest:
 
 #{{{ Faroo response class
 class FarooResponse:
+	"""
+	Encapsulates an individual response from the FAROO API.
+
+	>>> FarooResponse(json...)
+	"""
 
 #{{{ Constructor
 	def __init__(self, template={}):
@@ -48,6 +71,11 @@ class FarooResponse:
 
 #{{{ Faroo result class
 class FarooResult:
+	"""
+	Encapsulates an individual result returned from the FAROO API.
+
+	>>> FarooResult(json...)
+	"""
 
 #{{{ Constructor
 	def __init__(self, template={}):
@@ -73,6 +101,11 @@ class FarooResult:
 
 #{{{ Faroo related class
 class FarooRelated:
+	"""
+	Encapsulates an individual related result from the FAROO API.
+
+	>>> FarooRelated(json...)
+	"""
 
 #{{{ Constructor
 	def __init__(self, template={}):
@@ -86,6 +119,14 @@ class FarooRelated:
 
 #{{{ Perform a Faroo request
 def FarooPerformRequest(freq):
+	"""
+	Performs a FAROO API request.
+
+	Takes a FarooRequest, and returns a FarooResponse
+
+	>>> FarooPerformRequest(faroorequest)
+	"""
+
 	base       = 'http://www.faroo.com/api'
 	parameters = {
 		'q'      : freq.q,
@@ -125,6 +166,12 @@ def FarooPerformRequest(freq):
 
 #{{{ Faroo API helper
 class Faroo:
+	"""
+	Streamlines the creation of FAROO API requests.
+
+	>>> Faroo().param('length', 8).query('lolcats')
+	>>> Faroo().param('src', 'news').query()
+	"""
 
 #{{{ Constructor
 	def __init__(self):
