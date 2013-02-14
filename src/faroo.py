@@ -141,31 +141,18 @@ def FarooPerformRequest(freq):
 		'f'      : 'json'
 	}
 
-	try:
-		# Attempt to urlencode parameters
-		if sys.version_info < (3, 0):
-			parameters = urllib.urlencode(parameters)
-		else:
-			parameters = urllib.parse.urlencode(parameters)
-		url        = '?'.join([base, parameters])
-	except:
-		return None
+	# Attempt to urlencode parameters
+	import urllib.parse
+	parameters = urllib.parse.urlencode(parameters)
+	url = '?'.join([base, parameters])
 
-	try:
-		# Attempt to perform web request
-		if sys.version_info < (3, 0):
-			response   = urllib.urlopen(url)
-		else:
-			response   = urllib.request.urlopen(url)
-		data       = response.read().decode('utf-8')
-	except:
-		return None
+	# Attempt to perform web request
+	import urllib.request
+	response = urllib.request.urlopen(url)
+	data = response.read().decode('utf-8')
 
-	try:
-		# Attempt to parse json
-		data       = json.loads(data)
-	except:
-		return None
+	# Attempt to parse json
+	data = json.loads(data)
 
 	return FarooResponse(data)
 #}}}
