@@ -10,9 +10,6 @@ Full FAROO API documentation can be found at http://www.faroo.com/hp/api/api.htm
 """
 
 import datetime
-import sys
-import urllib
-import json
 
 __author__ = 'Josh Komoroske'
 
@@ -141,14 +138,28 @@ def FarooPerformRequest(freq):
 		'f'      : 'json'
 	}
 
+	# Attempt to import required modules
+	import urllib
+	import json
+
 	# Attempt to urlencode parameters
-	import urllib.parse
-	parameters = urllib.parse.urlencode(parameters)
+	if hasattr(urllib, 'urlencode'): # probably the old api
+		parameters = urllib.urlencode(parameters)
+	else: # probably the new api
+		import urllib.parse
+		parameters = urllib.parse.urlencode(parameters)
+
+	# Build target url
 	url = '?'.join([base, parameters])
 
 	# Attempt to perform web request
-	import urllib.request
-	response = urllib.request.urlopen(url)
+	if hasattr(urllib, 'urlopen'): # probably the old api
+		response = urllib.urlopen(url)
+	else: # probably the new api
+		import urllib.request
+		response = urllib.request.urlopen(url)
+
+	# Attempt to decode response
 	data = response.read().decode('utf-8')
 
 	# Attempt to parse json
@@ -193,9 +204,13 @@ class Faroo:
 	def query(self, q=None):
 		"""Perform a query"""
 		self.param('q', q)
+
 		freq = FarooRequest(self.parameters)
 
-		return FarooPerformRequest(freq)
+		try:
+			return FarooPerformRequest(freq)
+		except:
+			return None
 #}}}
 
 #}}}
